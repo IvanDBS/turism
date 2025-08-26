@@ -1,0 +1,19 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: one
+  tour: one
+  start_date: 2025-08-25
+  end_date: 2025-08-25
+  guests: 1
+  total_price: 9.99
+  status: MyString
+
+two:
+  user: two
+  tour: two
+  start_date: 2025-08-25
+  end_date: 2025-08-25
+  guests: 1
+  total_price: 9.99
+  status: MyString
