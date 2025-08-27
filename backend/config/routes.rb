@@ -21,6 +21,40 @@ Rails.application.routes.draw do
       
       # Bookings
       resources :bookings, only: [:index, :show, :create, :update, :destroy]
+      
+      # OBS API Integration
+      namespace :obs do
+        get 'tours', to: 'obs#tours'
+        get 'tours/:id', to: 'obs#tour_detail'
+        get 'tours/search', to: 'obs#search_tours'
+        get 'tours/featured', to: 'obs#featured_tours'
+        get 'tours/categories', to: 'obs#categories'
+        get 'tours/:id/availability', to: 'obs#tour_availability'
+        post 'bookings', to: 'obs#create_booking'
+        get 'bookings/:id', to: 'obs#booking_status'
+      end
+      
+      # Data Synchronization
+      namespace :sync do
+        get 'status', to: 'sync#sync_status'
+        post 'tours', to: 'sync#sync_tours'
+        post 'tours/:id', to: 'sync#sync_tour'
+        post 'all', to: 'sync#sync_all'
+      end
+      
+      # Dashboard / Personal Cabinet
+      namespace :dashboard do
+        get '', to: 'dashboard#index'
+        get 'stats', to: 'dashboard#stats'
+        patch 'profile', to: 'dashboard#profile'
+        get 'notifications', to: 'dashboard#notifications'
+        patch 'notifications/:id/read', to: 'dashboard#mark_notification_read'
+        get 'recommendations', to: 'dashboard#recommendations'
+        get 'booking_history', to: 'dashboard#booking_history'
+        get 'favorites', to: 'dashboard#favorites'
+        post 'favorites/:tour_id', to: 'dashboard#add_to_favorites'
+        delete 'favorites/:tour_id', to: 'dashboard#remove_from_favorites'
+      end
     end
   end
 

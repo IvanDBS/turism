@@ -1,7 +1,15 @@
 default: &default
   adapter: postgresql
   encoding: unicode
+  # JIT optimization: connection pooling
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  # JIT optimization: connection timeout
+  connect_timeout: 5
+  checkout_timeout: 5
+  # JIT optimization: statement timeout
+  statement_timeout: 30
+  # JIT optimization: idle timeout
+  idle_in_transaction_session_timeout: 60
 
 development:
   <<: *default

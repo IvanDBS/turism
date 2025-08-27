@@ -14,15 +14,23 @@ threads min_threads_count, max_threads_count
 rails_env = ENV.fetch("RAILS_ENV") { "development" }
 
 if rails_env == "production"
-  # If you are running more than 1 thread per process, the workers count
-  # should be equal to the number of processors (CPU cores) in production.
-  #
-  # It defaults to 1 because it's impossible to reliably detect how many
-  # CPU cores are available. Make sure to set the `WEB_CONCURRENCY` environment
-  # variable to match the number of processors.
-  worker_count = Integer(ENV.fetch("WEB_CONCURRENCY") { 1 })
+  # JIT optimization: worker configuration
+  worker_count = Integer(ENV.fetch("WEB_CONCURRENCY") { 2 })
   if worker_count > 1
     workers worker_count
+    preload_app!
+    
+    # JIT optimization: worker timeout
+    worker_timeout 30
+    
+    # JIT optimization: worker boot
+    before_fork do
+      ActiveRecord::Base.connection_pool.disconnect! if defined?(ActiveRecord::Base)
+    end
+    
+    on_worker_boot do
+      ActiveRecord::Base.establish_connection if defined?(ActiveRecord::Base)
+    end
   else
     preload_app!
   end

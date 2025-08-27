@@ -1,4 +1,4 @@
-class Api::V1::BookingsController < ApplicationController
+class Api::V1::BookingsController < Api::V1::ApplicationController
   def index
     bookings = current_user.bookings.includes(:tour)
     

@@ -1,4 +1,4 @@
-class Api::V1::AuthController < ApplicationController
+class Api::V1::AuthController < Api::V1::ApplicationController
   skip_before_action :authenticate_user!, only: [:register, :login]
   
   def register
@@ -7,7 +7,13 @@ class Api::V1::AuthController < ApplicationController
     if user.save
       token = JwtService.encode({ user_id: user.id })
       render json: {
-        user: UserSerializer.new(user),
+        user: {
+          id: user.id,
+          email: user.email,
+          name: user.name,
+          role: user.role,
+          created_at: user.created_at
+        },
         token: token
       }, status: :created
     else
@@ -21,7 +27,13 @@ class Api::V1::AuthController < ApplicationController
     if user&.authenticate(params[:password])
       token = JwtService.encode({ user_id: user.id })
       render json: {
-        user: UserSerializer.new(user),
+        user: {
+          id: user.id,
+          email: user.email,
+          name: user.name,
+          role: user.role,
+          created_at: user.created_at
+        },
         token: token
       }
     else
@@ -30,7 +42,13 @@ class Api::V1::AuthController < ApplicationController
   end
   
   def me
-    render json: UserSerializer.new(current_user)
+    render json: {
+      id: current_user.id,
+      email: current_user.email,
+      name: current_user.name,
+      role: current_user.role,
+      created_at: current_user.created_at
+    }
   end
   
   private

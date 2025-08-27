@@ -9,8 +9,17 @@ gem "bcrypt", "~> 3.1.7"
 gem "jwt"
 gem "rack-cors"
 gem "active_model_serializers"
+gem "http"
 gem "tzinfo-data", platforms: %i[ windows jruby ]
 gem "bootsnap", require: false
+
+# JIT and Performance Optimization
+gem "redis", "~> 5.0"
+gem "sidekiq", "~> 7.0"
+gem "oj", "~> 3.16"
+gem "memory_profiler"
+gem "stackprof"
+gem "rack-mini-profiler"
 
 group :development, :test do
   gem "debug", platforms: %i[ mri windows ]

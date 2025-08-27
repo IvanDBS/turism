@@ -7,7 +7,8 @@ class JwtService
   end
   
   def self.decode(token)
-    JWT.decode(token, SECRET_KEY, true, { algorithm: ALGORITHM })[0]
+    decoded = JWT.decode(token, SECRET_KEY, true, { algorithm: ALGORITHM })[0]
+    decoded.symbolize_keys
   rescue JWT::DecodeError
     nil
   end
